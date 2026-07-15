@@ -1,0 +1,543 @@
+/* Base Resets & Colors */
+:root {
+    --bg-color: #0b010c;
+    --primary-love: #ff335c;
+    --accent-pink: #ff758f;
+    --gold: #f9d423;
+    --text-white: #fff0f3;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-white);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1200px;
+}
+
+/* Starfield canvas background */
+#starfield {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Floating Hearts Layer */
+#hearts-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.floating-heart {
+    position: absolute;
+    color: var(--primary-love);
+    opacity: 0.6;
+    animation: floatUp 6s linear forwards;
+}
+
+/* Tap Sparkle Star */
+.tap-heart {
+    position: absolute;
+    color: var(--accent-pink);
+    font-size: 1.5rem;
+    pointer-events: none;
+    z-index: 999;
+    animation: explode 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+/* Music Control Button */
+#music-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    background: rgba(255, 51, 92, 0.25);
+    border: 1px solid var(--primary-love);
+    color: var(--text-white);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#music-toggle:hover {
+    background: var(--primary-love);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--primary-love);
+}
+
+/* Screen Structure */
+.screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.screen.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(30px) scale(0.95);
+}
+
+/* --- SCREEN 1: INTRO --- */
+#screen-intro {
+    cursor: pointer;
+}
+
+.intro-content {
+    text-align: center;
+    max-width: 85%;
+}
+
+.intro-content h1 {
+    font-size: 2.4rem;
+    color: var(--accent-pink);
+    text-shadow: 0 0 15px rgba(255, 51, 92, 0.8);
+    margin-bottom: 25px;
+    min-height: 80px;
+    line-height: 1.4;
+}
+
+.tap-instruction {
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(249, 212, 35, 0.5);
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+.animate-flicker {
+    animation: flicker 2s infinite ease-in-out;
+}
+
+/* --- SCREEN 2: GIFT BOX --- */
+.gift-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.glow-text-slow {
+    color: var(--accent-pink);
+    margin-bottom: 10px;
+    animation: slowGlow 2s infinite alternate ease-in-out;
+}
+
+.sub-text {
+    color: var(--gold);
+    margin-bottom: 50px;
+    font-size: 1.1rem;
+}
+
+.gift-box-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+/* 3D Gift Box with automatic pulsing shake */
+.gift-box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--primary-love);
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    z-index: 5;
+    animation: gentleShake 3s infinite ease-in-out;
+}
+
+.gift-box:hover {
+    animation: fastShake 0.5s infinite;
+}
+
+.gift-lid {
+    position: absolute;
+    width: 160px;
+    height: 38px;
+    background: #e61f48;
+    left: -5px;
+    top: -28px;
+    border-radius: 6px;
+    box-shadow: 0 5px 6px rgba(0,0,0,0.3);
+    z-index: 6;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s;
+}
+
+.gift-ribbon-vertical {
+    position: absolute;
+    width: 26px;
+    height: 100%;
+    background: var(--gold);
+    left: calc(50% - 13px);
+    top: 0;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+}
+
+.gift-ribbon-horizontal {
+    position: absolute;
+    width: 100%;
+    height: 26px;
+    background: var(--gold);
+    top: calc(50% - 13px);
+    left: 0;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+}
+
+/* Aura Glow effect behind gift */
+.gift-glow {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    top: -15px;
+    left: -15px;
+    background: radial-gradient(circle, rgba(255,51,92,0.4) 0%, rgba(0,0,0,0) 70%);
+    border-radius: 50%;
+    z-index: 3;
+    pointer-events: none;
+    animation: heartbeat 1.5s infinite alternate;
+}
+
+.gift-box.opened .gift-lid {
+    transform: translateY(-120px) rotate(-35deg) scale(0.8);
+    opacity: 0;
+}
+
+.gift-box.opened {
+    transform: scale(0.7) translateY(80px);
+    opacity: 0;
+    transition: all 1s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+
+/* --- SCREEN 3: ENVELOPE & LETTER --- */
+.envelope-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.envelope-container h2 {
+    color: var(--accent-pink);
+    margin-bottom: 30px;
+}
+
+.envelope-wrapper {
+    position: relative;
+    width: 330px;
+    height: 220px;
+    background: #f25575;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.envelope-wrapper:hover {
+    transform: translateY(-5px) scale(1.02);
+}
+
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.flap {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 165px solid transparent;
+    border-right: 165px solid transparent;
+    border-top: 110px solid #d93d5c;
+    top: 0;
+    left: 0;
+    transform-origin: top;
+    transition: transform 0.7s ease, z-index 0.3s;
+    z-index: 3;
+}
+
+.pocket {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 165px solid #f76c88;
+    border-right: 165px solid #f76c88;
+    border-bottom: 110px solid #e04363;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+}
+
+/* Letter with realistic scroll feel */
+.letter {
+    position: absolute;
+    width: 310px;
+    height: 200px;
+    background: #fffdfa;
+    left: 10px;
+    bottom: 5px;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1), z-index 0.6s, height 0.9s;
+    z-index: 1;
+    overflow: hidden;
+    color: #3b0d19;
+}
+
+.letter-text {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.letter-text::-webkit-scrollbar {
+    width: 5px;
+}
+.letter-text::-webkit-scrollbar-thumb {
+    background-color: var(--accent-pink);
+    border-radius: 10px;
+}
+
+.letter-text h3 {
+    font-family: 'Georgia', serif;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: var(--primary-love);
+    border-bottom: 1px dashed rgba(255, 51, 92, 0.25);
+    padding-bottom: 8px;
+}
+
+.letter-text p {
+    font-family: 'Georgia', serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    margin-bottom: 15px;
+}
+
+.letter-text .signature {
+    font-weight: bold;
+    color: var(--primary-love);
+    margin-top: 20px;
+    border-top: 1px dashed rgba(255, 51, 92, 0.15);
+    padding-top: 10px;
+}
+
+/* Open States */
+.envelope-wrapper.open .flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.envelope-wrapper.open .letter {
+    transform: translateY(-160px) scale(1.05);
+    height: 350px;
+    z-index: 4;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+}
+
+.btn {
+    margin-top: 40px;
+    background: linear-gradient(135deg, var(--primary-love), var(--accent-pink));
+    color: white;
+    border: none;
+    padding: 13px 35px;
+    font-size: 1.05rem;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(255, 51, 92, 0.45);
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 51, 92, 0.6);
+}
+
+/* --- SCREEN 4: FINAL SURPRISE --- */
+.final-container {
+    text-align: center;
+    max-width: 500px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bounce-heart {
+    font-size: 3.8rem;
+    margin-bottom: 10px;
+    animation: heartbeat 1s infinite alternate;
+}
+
+.glow-text {
+    font-size: 2.4rem;
+    color: var(--accent-pink);
+    text-shadow: 0 0 20px rgba(255, 117, 143, 0.8);
+    margin-bottom: 10px;
+    animation: slowGlow 3s infinite alternate ease-in-out;
+}
+
+.love-quote {
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1.05rem;
+    margin-bottom: 25px;
+    max-width: 90%;
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+/* Slideshow Container */
+.slideshow-wrapper {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+/* Polaroid Photo Frame */
+.photo-placeholder {
+    width: 270px;
+    height: 270px;
+    border: 10px solid white;
+    border-bottom-width: 35px; /* Aesthetic Polaroid Border */
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+    transform: rotate(-3deg);
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: #000;
+}
+
+.photo-placeholder:hover {
+    transform: rotate(0deg) scale(1.05);
+}
+
+/* Custom Zoom-in Ken Burns Transition for Images */
+.photo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.15);
+    transition: opacity 0.8s ease-in-out, transform 3.5s ease-out;
+}
+
+.photo-placeholder img.active-slide {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.footer-note {
+    font-size: 1rem;
+    opacity: 0.8;
+    color: var(--accent-pink);
+    letter-spacing: 1px;
+}
+
+/* Custom Keyframe Animations */
+@keyframes floatUp {
+    0% {
+        transform: translateY(105vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% {
+        transform: translateY(-10vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes explode {
+    0% {
+        transform: translate(0, 0) scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--x), var(--y)) scale(1.3);
+        opacity: 0;
+    }
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.12); }
+}
+
+@keyframes gentleShake {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(2deg) scale(1.02); }
+}
+
+@keyframes fastShake {
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(-3deg); }
+    40% { transform: rotate(3deg); }
+    60% { transform: rotate(-3deg); }
+    80% { transform: rotate(3deg); }
+}
+
+@keyframes slowGlow {
+    0% { text-shadow: 0 0 10px rgba(255,117,143,0.5); }
+    100% { text-shadow: 0 0 25px rgba(255,117,143,0.9), 0 0 10px rgba(255,51,92,0.5); }
+}
+
+/* Utilities */
+.hidden {
+    display: none !important;
+}
+
+/* Responsiveness adjustments */
+@media (max-width: 600px) {
+    .intro-content h1 { font-size: 1.8rem; }
+    .envelope-wrapper { width: 290px; height: 190px; }
+    .flap { border-left-width: 145px; border-right-width: 145px; border-top-width: 95px; }
+    .pocket { border-left-width: 145px; border-right-width: 145px; border-bottom-width: 95px; }
+    .letter { width: 270px; height: 170px; left: 10px; }
+    .envelope-wrapper.open .letter { height: 290px; transform: translateY(-120px) scale(1.05); }
+    .photo-placeholder { width: 230px; height: 230px; }
+    .glow-text { font-size: 2rem; }
+}

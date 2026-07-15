@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary Meri Jaan! ❤️</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="starfield"></canvas>
+    
+    <div id="hearts-container"></div>
+
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="music-toggle" class="hidden">🎵 Play Music</button>
+
+    <div id="screen-intro" class="screen active">
+        <div class="intro-content">
+            <h1 id="typewriter"></h1>
+            <p class="tap-instruction animate-flicker">~ tap anywhere to begin ~</p>
+        </div>
+    </div>
+
+    <div id="screen-gift" class="screen hidden">
+        <div class="gift-container">
+            <h2 class="glow-text-slow">I have a little surprise for you...</h2>
+            <p class="sub-text">Tap the gift to open it! 🎁</p>
+            <div class="gift-box-wrapper">
+                <div class="gift-box" id="gift-box">
+                    <div class="gift-lid"></div>
+                    <div class="gift-ribbon-vertical"></div>
+                    <div class="gift-ribbon-horizontal"></div>
+                    <div class="gift-body"></div>
+                </div>
+                <div class="gift-glow"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-envelope" class="screen hidden">
+        <div class="envelope-container">
+            <h2 class="glow-text-slow">A letter just for you 💌</h2>
+            <div class="envelope-wrapper" id="envelope-wrapper">
+                <div class="envelope">
+                    <div class="flap"></div>
+                    <div class="pocket"></div>
+                    <div class="letter" id="letter">
+                        <div class="letter-text">
+                            <h3>Meri Jaan,</h3>
+                            <p>Happy Anniversary meri jaan ❤️🌹</p>
+                            <p>Aaj ka din meri zindagi k sabse khoobsurat dino ma se ek ha kyu k isi din Allah ne hmain ek doosry k naseeb ma likha.</p>
+                            <p>Alhamdulillah aap meri zindagi ka woh hissa ho jis ny har din ko or bhi pyara bana diya aap sirf meri wife nhi meri sab se achi dost meri khushi meri dua or meri sukoon ho❤️</p>
+                            <p>Shayad ma har baar apne jazbaat alfaazon mein theek se bayan na kar pao lekin itna zaroor janta hu ke aap meri zindagi ki sab se qeemti nemat ho.</p>
+                            <p>Ma dua karta hu k Allah hmary darmiyan hamesha mohabbat bharosa or rehmat qaim rakhe har buri nazar se bachaye or humein duniya or aakhirat dono mein saath rakhe🤲</p>
+                            <p>Thank you meri jaan 😘 meri zindagi ma aany k liye or har haal ma mera saath dene k liye. I love you more than words can ever express ❤️</p>
+                            <p class="signature">Happy Anniversary meri hamesha wali mohabbat 🌹🥹</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="close-letter-btn" class="btn hidden">Next Surprise ✨</button>
+        </div>
+    </div>
+
+    <div id="screen-final" class="screen hidden">
+        <div class="final-container">
+            <h1 class="bounce-heart">❤️</h1>
+            <h2 class="glow-text">Happy Anniversary!</h2>
+            <p class="love-quote">"In all the world, there is no heart for me like yours."</p>
+            
+            <div class="slideshow-wrapper">
+                <div class="photo-placeholder">
+                    <img id="slideshow-img" src="IMG_20260715_004022_975.jpg" alt="Our Beautiful Memory">
+                </div>
+                <div class="sparkles-overlay"></div>
+            </div>
+            
+            <p class="footer-note">Hamesha Tumhare Saath... ✨</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
