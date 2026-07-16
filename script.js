@@ -246,16 +246,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // ⚙️ APNI DATE YAHA EDIT KAREIN:
-    // Format: "YYYY-MM-DDTHH:MM:SS" 
-    // Example: "2025-07-16T12:00:00" -> 16th July 2025
+    // ❤️ RELATIONSHIP START DATE (23 July 2025):
     // ==========================================
-    const anniversaryStartDate = new Date("2025-07-16T12:00:00");
+    const anniversaryStartDate = new Date("2025-07-23T00:00:00");
 
     function startLoveTimer() {
         function updateTimer() {
             const now = new Date();
-            const difference = now - anniversaryStartDate;
+            const difference = now.getTime() - anniversaryStartDate.getTime();
 
             if (difference < 0) {
                 document.getElementById("years").textContent = "00";
@@ -266,12 +264,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            // Calculation units
             const msPerSecond = 1000;
             const msPerMinute = msPerSecond * 60;
             const msPerHour = msPerMinute * 60;
             const msPerDay = msPerHour * 24;
             const msPerYear = msPerDay * 365.25;
 
+            // Calculate whole units
             const years = Math.floor(difference / msPerYear);
             let remainingMs = difference % msPerYear;
 
