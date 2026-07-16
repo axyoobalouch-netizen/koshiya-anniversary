@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
         heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
         
         heart.style.left = Math.random() * 100 + "vw";
-        const duration = Math.random() * 4 + 4; // 4s to 8s
+        const duration = Math.random() * 4 + 4;
         heart.style.animationDuration = duration + "s";
         heart.style.fontSize = Math.random() * 1.5 + 0.8 + "rem";
         
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Click/Tap Sparks Effect
     document.addEventListener("click", (e) => {
-        if (e.target.tagName === 'BUTTON') return;
+        if (e.target.tagName === 'BUTTON' || e.target.closest('#letter')) return;
         
         const count = 6;
         for (let i = 0; i < count; i++) {
@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     typeEffect();
 
-    // Safe Music Playing (Prevents transitions from breaking if music is blocked)
+    // Safe Music Playing
     function startMusic() {
         audio.play()
             .then(() => {
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 musicBtn.classList.remove("hidden");
             })
             .catch((error) => {
-                console.log("Audio autoplay was blocked by browser. Showing music button instead.");
+                console.log("Audio autoplay was blocked.");
                 musicBtn.textContent = "🎵 Play Music";
                 musicBtn.classList.remove("hidden");
             });
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Screen 1 to Screen 2 (Always progresses, regardless of music state!)
+    // Screen 1 to Screen 2
     screenIntro.addEventListener("click", () => {
         startMusic();
         transitionScreen(screenIntro, screenGift);
@@ -213,289 +213,31 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1200);
     });
 
-    // Envelope Control
-    envelopeWrapper.addEventListener("click", () => {
+    // FIX: Robust Envelope Opening Mechanism
+    envelopeWrapper.addEventListener("click", (e) => {
+        // Agar click letter ke scrollbar ya text par ho raha hai toh close na ho
+        if (e.target.closest('.letter-text')) return;
+
         envelopeWrapper.classList.toggle("open");
+        
         if (envelopeWrapper.classList.contains("open")) {
+            // Show next button after transition completes
             setTimeout(() => {
                 closeLetterBtn.classList.remove("hidden");
-            }, 1800);
-        }
-    });
-
-    closeLetterBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        transitionScreen(screenEnvelope, screenFinal);
-        startSlideshow();
-    });
-
-    // Automatic Smart Slideshow Loop
-    slideshowImg.addEventListener("error", () => {
-        showNextImage();
-    });
-
-    function showNextImage() {
-        currentImgIndex = (currentImgIndex + 1) % imagePaths.length;
-        
-        slideshowImg.classList.remove("active-slide");
-        setTimeout(() => {
-            slideshowImg.src = imagePaths[currentImgIndex];
-            slideshowImg.classList.add("active-slide");
-        }, 600);
-    }
-
-    function startSlideshow() {
-        if (slideshowInterval) clearInterval(slideshowInterval);
-        
-        slideshowImg.src = imagePaths[currentImgIndex];
-        slideshowImg.classList.add("active-slide");
-
-        slideshowInterval = setInterval(() => {
-            showNextImage();
-        }, 3500);
-    }
-
-    function transitionScreen(fromScreen, toScreen) {
-        fromScreen.classList.add("hidden");
-        fromScreen.classList.remove("active");
-        
-        setTimeout(() => {
-            toScreen.classList.remove("hidden");
-            toScreen.classList.add("active");
-        }, 800);
-    }
-});document.addEventListener("DOMContentLoaded", () => {
-    // DOM Elements
-    const canvas = document.getElementById("starfield");
-    const ctx = canvas.getContext("2d");
-    
-    const audio = document.getElementById("bg-music");
-    const musicBtn = document.getElementById("music-toggle");
-    
-    const screenIntro = document.getElementById("screen-intro");
-    const screenGift = document.getElementById("screen-gift");
-    const screenEnvelope = document.getElementById("screen-envelope");
-    const screenFinal = document.getElementById("screen-final");
-    
-    const typewriterElement = document.getElementById("typewriter");
-    const giftBox = document.getElementById("gift-box");
-    const envelopeWrapper = document.getElementById("envelope-wrapper");
-    const closeLetterBtn = document.getElementById("close-letter-btn");
-    const slideshowImg = document.getElementById("slideshow-img");
-    const heartsContainer = document.getElementById("hearts-container");
-
-    // All your uploaded images
-    const imagePaths = [
-        "IMG_20260715_004022_975.jpg",
-        "IMG_20260713_073548_771.jpg",
-        "IMG_20260609_000604_767.jpg",
-        "IMG_20260602_150235_443.jpg",
-        "IMG_20260531_201850_773.jpg",
-        "IMG_20260523_182613_321.jpg",
-        "IMG_20260523_182352_126.jpg",
-        "IMG_20260523_181523_681.jpg",
-        "IMG_20260523_180902_657.jpg",
-        "IMG_20260523_175744_735.jpg",
-        "IMG_20260523_175117_335.jpg",
-        "IMG_20260523_175130_871.jpg",
-        "IMG_20260523_175135_169.jpg",
-        "IMG_20260523_175158_518.jpg",
-        "IMG_20260523_175233_727.jpg",
-        "IMG_20260523_175235_314.jpg",
-        "IMG_20260523_175247_028.jpg",
-        "IMG_20260523_175528_745.jpg",
-        "IMG_20260523_175551_486.jpg",
-        "IMG_20260523_175634_836.jpg",
-        "IMG_20260523_175812_520.jpg",
-        "IMG_20260523_180000_167.jpg",
-        "IMG_20260523_180407_785.jpg",
-        "IMG_20260523_180246_185.jpg",
-        "IMG_20260523_180304_197.jpg",
-        "IMG_20260523_180345_530.jpg",
-        "IMG_20260523_180532_647.jpg",
-        "IMG_20260523_180632_720.jpg",
-        "IMG_20260523_181419_499.jpg",
-        "IMG_20260523_182441_087.jpg"
-    ];
-
-    let currentImgIndex = 0;
-    let slideshowInterval;
-
-    // Starfield Setup
-    let stars = [];
-    const starCount = 80;
-
-    // Typewriter Text
-    const introText = "Happy Anniversary Meri Jaan... ❤️ Tap anywhere to enter our beautiful world.";
-    let charIndex = 0;
-
-    // Canvas adjustment
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-
-    // Star Class
-    class Star {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 1.8 + 0.4;
-            this.speed = Math.random() * 0.15 + 0.05;
-            this.alpha = Math.random();
-            this.deltaAlpha = Math.random() * 0.012 * (Math.random() > 0.5 ? 1 : -1);
-        }
-        update() {
-            this.alpha += this.deltaAlpha;
-            if (this.alpha <= 0.1 || this.alpha >= 1) {
-                this.deltaAlpha = -this.deltaAlpha;
-            }
-            this.y -= this.speed;
-            if (this.y < 0) {
-                this.y = canvas.height;
-                this.x = Math.random() * canvas.width;
-            }
-        }
-        draw() {
-            ctx.save();
-            ctx.globalAlpha = this.alpha;
-            ctx.fillStyle = "#ffffff";
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
-        }
-    }
-
-    for (let i = 0; i < starCount; i++) {
-        stars.push(new Star());
-    }
-
-    function animateStars() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(star => {
-            star.update();
-            star.draw();
-        });
-        requestAnimationFrame(animateStars);
-    }
-    animateStars();
-
-    // Floating Hearts generator
-    function generateFloatingHeart() {
-        const heartSymbols = ["❤️", "💖", "💕", "🌸", "🌹"];
-        const heart = document.createElement("div");
-        heart.classList.add("floating-heart");
-        heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
-        
-        heart.style.left = Math.random() * 100 + "vw";
-        const duration = Math.random() * 4 + 4; // 4s to 8s
-        heart.style.animationDuration = duration + "s";
-        heart.style.fontSize = Math.random() * 1.5 + 0.8 + "rem";
-        
-        heartsContainer.appendChild(heart);
-        
-        setTimeout(() => {
-            heart.remove();
-        }, duration * 1000);
-    }
-    setInterval(generateFloatingHeart, 500);
-
-    // Click/Tap Sparks Effect
-    document.addEventListener("click", (e) => {
-        if (e.target.tagName === 'BUTTON') return;
-        
-        const count = 6;
-        for (let i = 0; i < count; i++) {
-            const sparkle = document.createElement("div");
-            sparkle.classList.add("tap-heart");
-            sparkle.innerHTML = Math.random() > 0.5 ? "❤️" : "🌸";
-            sparkle.style.left = e.clientX + "px";
-            sparkle.style.top = e.clientY + "px";
-            
-            const angle = Math.random() * Math.PI * 2;
-            const distance = Math.random() * 80 + 40;
-            const x = Math.cos(angle) * distance;
-            const y = Math.sin(angle) * distance;
-            
-            sparkle.style.setProperty("--x", `${x}px`);
-            sparkle.style.setProperty("--y", `${y}px`);
-            
-            document.body.appendChild(sparkle);
-            setTimeout(() => {
-                sparkle.remove();
-            }, 800);
-        }
-    });
-
-    // Typewriter running
-    function typeEffect() {
-        if (charIndex < introText.length) {
-            typewriterElement.textContent += introText.charAt(charIndex);
-            charIndex++;
-            setTimeout(typeEffect, 70);
-        }
-    }
-    typeEffect();
-
-    // Safe Music Playing (Prevents transitions from breaking if music is blocked)
-    function startMusic() {
-        audio.play()
-            .then(() => {
-                musicBtn.textContent = "🔊 Pause Music";
-                musicBtn.classList.remove("hidden");
-            })
-            .catch((error) => {
-                console.log("Audio autoplay was blocked by browser. Showing music button instead.");
-                musicBtn.textContent = "🎵 Play Music";
-                musicBtn.classList.remove("hidden");
-            });
-    }
-
-    musicBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (audio.paused) {
-            audio.play();
-            musicBtn.textContent = "🔊 Pause Music";
+            }, 1000);
         } else {
-            audio.pause();
-            musicBtn.textContent = "🎵 Play Music";
+            closeLetterBtn.classList.add("hidden");
         }
     });
 
-    // Screen 1 to Screen 2 (Always progresses, regardless of music state!)
-    screenIntro.addEventListener("click", () => {
-        startMusic();
-        transitionScreen(screenIntro, screenGift);
-    });
-
-    // Screen 2 to Screen 3
-    giftBox.addEventListener("click", () => {
-        giftBox.classList.add("opened");
-        setTimeout(() => {
-            transitionScreen(screenGift, screenEnvelope);
-        }, 1200);
-    });
-
-    // Envelope Control
-    envelopeWrapper.addEventListener("click", () => {
-        envelopeWrapper.classList.toggle("open");
-        if (envelopeWrapper.classList.contains("open")) {
-            setTimeout(() => {
-                closeLetterBtn.classList.remove("hidden");
-            }, 1800);
-        }
-    });
-
+    // Screen 3 to Final Screen
     closeLetterBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         transitionScreen(screenEnvelope, screenFinal);
         startSlideshow();
     });
 
-    // Automatic Smart Slideshow Loop
+    // Automatic Slideshow Loop
     slideshowImg.addEventListener("error", () => {
         showNextImage();
     });
