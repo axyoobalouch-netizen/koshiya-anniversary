@@ -1,4 +1,3 @@
-/* Base Resets & Colors */
 :root {
     --bg-color: #0b010c;
     --primary-love: #ff335c;
@@ -28,7 +27,6 @@ body {
     perspective: 1200px;
 }
 
-/* Starfield canvas background */
 #starfield {
     position: absolute;
     top: 0;
@@ -39,7 +37,6 @@ body {
     pointer-events: none;
 }
 
-/* Floating Hearts Layer */
 #hearts-container {
     position: absolute;
     width: 100%;
@@ -58,7 +55,6 @@ body {
     animation: floatUp 6s linear forwards;
 }
 
-/* Tap Sparkle Star */
 .tap-heart {
     position: absolute;
     color: var(--accent-pink);
@@ -68,7 +64,6 @@ body {
     animation: explode 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
 }
 
-/* Music Control Button */
 #music-toggle {
     position: absolute;
     top: 20px;
@@ -90,7 +85,6 @@ body {
     box-shadow: 0 0 15px var(--primary-love);
 }
 
-/* Screen Structure */
 .screen {
     position: absolute;
     width: 100%;
@@ -115,7 +109,6 @@ body {
     transform: translateY(30px) scale(0.95);
 }
 
-/* --- SCREEN 1: INTRO --- */
 #screen-intro {
     cursor: pointer;
 }
@@ -150,7 +143,6 @@ body {
     animation: flicker 2s infinite ease-in-out;
 }
 
-/* --- SCREEN 2: GIFT BOX --- */
 .gift-container {
     text-align: center;
     display: flex;
@@ -176,7 +168,6 @@ body {
     height: 150px;
 }
 
-/* 3D Gift Box with automatic pulsing shake */
 .gift-box {
     position: absolute;
     width: 100%;
@@ -226,7 +217,6 @@ body {
     box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
 }
 
-/* Aura Glow effect behind gift */
 .gift-glow {
     position: absolute;
     width: 180px;
@@ -251,7 +241,6 @@ body {
     transition: all 1s cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
 
-/* --- SCREEN 3: ENVELOPE & LETTER --- */
 .envelope-container {
     display: flex;
     flex-direction: column;
@@ -311,7 +300,6 @@ body {
     z-index: 2;
 }
 
-/* Letter with realistic scroll feel */
 .letter {
     position: absolute;
     width: 310px;
@@ -366,7 +354,6 @@ body {
     padding-top: 10px;
 }
 
-/* Open States */
 .envelope-wrapper.open .flap {
     transform: rotateX(180deg);
     z-index: 1;
@@ -398,10 +385,9 @@ body {
     box-shadow: 0 8px 25px rgba(255, 51, 92, 0.6);
 }
 
-/* --- SCREEN 4: FINAL SURPRISE --- */
 .final-container {
     text-align: center;
-    max-width: 500px;
+    max-width: 600px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -409,40 +395,79 @@ body {
 }
 
 .bounce-heart {
-    font-size: 3.8rem;
-    margin-bottom: 10px;
+    font-size: 3.2rem;
+    margin-bottom: 5px;
     animation: heartbeat 1s infinite alternate;
 }
 
 .glow-text {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     color: var(--accent-pink);
     text-shadow: 0 0 20px rgba(255, 117, 143, 0.8);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     animation: slowGlow 3s infinite alternate ease-in-out;
 }
 
-.love-quote {
-    font-style: italic;
-    color: var(--gold);
-    font-size: 1.05rem;
+.timer-container {
+    background: rgba(255, 51, 92, 0.1);
+    border: 1px solid rgba(255, 117, 143, 0.2);
+    padding: 15px 20px;
+    border-radius: 16px;
+    backdrop-filter: blur(8px);
     margin-bottom: 25px;
-    max-width: 90%;
-    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    max-width: 450px;
 }
 
-/* Slideshow Container */
+.timer-title {
+    color: var(--gold);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+#love-timer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.time-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 65px;
+}
+
+.time-box span {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 10px var(--accent-pink);
+    font-family: monospace;
+}
+
+.time-box label {
+    font-size: 0.75rem;
+    color: var(--accent-pink);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 .slideshow-wrapper {
     position: relative;
     margin-bottom: 25px;
 }
 
-/* Polaroid Photo Frame */
 .photo-placeholder {
-    width: 270px;
-    height: 270px;
+    width: 250px;
+    height: 250px;
     border: 10px solid white;
-    border-bottom-width: 35px; /* Aesthetic Polaroid Border */
+    border-bottom-width: 35px;
     border-radius: 4px;
     overflow: hidden;
     box-shadow: 0 20px 40px rgba(0,0,0,0.7);
@@ -455,7 +480,6 @@ body {
     transform: rotate(0deg) scale(1.05);
 }
 
-/* Custom Zoom-in Ken Burns Transition for Images */
 .photo-placeholder img {
     width: 100%;
     height: 100%;
@@ -477,7 +501,6 @@ body {
     letter-spacing: 1px;
 }
 
-/* Custom Keyframe Animations */
 @keyframes floatUp {
     0% {
         transform: translateY(105vh) rotate(0deg);
@@ -525,12 +548,10 @@ body {
     100% { text-shadow: 0 0 25px rgba(255,117,143,0.9), 0 0 10px rgba(255,51,92,0.5); }
 }
 
-/* Utilities */
 .hidden {
     display: none !important;
 }
 
-/* Responsiveness adjustments */
 @media (max-width: 600px) {
     .intro-content h1 { font-size: 1.8rem; }
     .envelope-wrapper { width: 290px; height: 190px; }
@@ -538,6 +559,9 @@ body {
     .pocket { border-left-width: 145px; border-right-width: 145px; border-bottom-width: 95px; }
     .letter { width: 270px; height: 170px; left: 10px; }
     .envelope-wrapper.open .letter { height: 290px; transform: translateY(-120px) scale(1.05); }
-    .photo-placeholder { width: 230px; height: 230px; }
-    .glow-text { font-size: 2rem; }
-}
+    .photo-placeholder { width: 210px; height: 210px; }
+    .glow-text { font-size: 1.8rem; }
+    .timer-container { max-width: 320px; padding: 10px; }
+    .time-box span { font-size: 1.3rem; }
+    .time-box { min-width: 48px; }
+                              }
