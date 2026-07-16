@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // DOM Elements
     const canvas = document.getElementById("starfield");
     const ctx = canvas.getContext("2d");
     
@@ -18,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const slideshowImg = document.getElementById("slideshow-img");
     const heartsContainer = document.getElementById("hearts-container");
 
-    // All your uploaded images
     const imagePaths = [
         "IMG_20260715_004022_975.jpg",
         "IMG_20260713_073548_771.jpg",
@@ -54,16 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentImgIndex = 0;
     let slideshowInterval;
-
-    // Starfield Setup
     let stars = [];
     const starCount = 80;
 
-    // Typewriter Text
     const introText = "Happy Anniversary Meri Jaan... ❤️ Tap anywhere to enter our beautiful world.";
     let charIndex = 0;
 
-    // Canvas adjustment
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -71,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Star Class
     class Star {
         constructor() {
             this.x = Math.random() * canvas.width;
@@ -117,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     animateStars();
 
-    // Floating Hearts generator
     function generateFloatingHeart() {
         const heartSymbols = ["❤️", "💖", "💕", "🌸", "🌹"];
         const heart = document.createElement("div");
@@ -137,7 +129,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     setInterval(generateFloatingHeart, 500);
 
-    // Click/Tap Sparks Effect
     document.addEventListener("click", (e) => {
         if (e.target.tagName === 'BUTTON' || e.target.closest('#letter')) return;
         
@@ -164,7 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Typewriter running
     function typeEffect() {
         if (charIndex < introText.length) {
             typewriterElement.textContent += introText.charAt(charIndex);
@@ -174,15 +164,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     typeEffect();
 
-    // Safe Music Playing
     function startMusic() {
         audio.play()
             .then(() => {
                 musicBtn.textContent = "🔊 Pause Music";
                 musicBtn.classList.remove("hidden");
             })
-            .catch((error) => {
-                console.log("Audio autoplay was blocked.");
+            .catch(() => {
                 musicBtn.textContent = "🎵 Play Music";
                 musicBtn.classList.remove("hidden");
             });
@@ -199,13 +187,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Screen 1 to Screen 2
     screenIntro.addEventListener("click", () => {
         startMusic();
         transitionScreen(screenIntro, screenGift);
     });
 
-    // Screen 2 to Screen 3
     giftBox.addEventListener("click", () => {
         giftBox.classList.add("opened");
         setTimeout(() => {
@@ -213,15 +199,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1200);
     });
 
-    // FIX: Robust Envelope Opening Mechanism
     envelopeWrapper.addEventListener("click", (e) => {
-        // Agar click letter ke scrollbar ya text par ho raha hai toh close na ho
         if (e.target.closest('.letter-text')) return;
 
         envelopeWrapper.classList.toggle("open");
         
         if (envelopeWrapper.classList.contains("open")) {
-            // Show next button after transition completes
             setTimeout(() => {
                 closeLetterBtn.classList.remove("hidden");
             }, 1000);
@@ -230,14 +213,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Screen 3 to Final Screen
     closeLetterBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         transitionScreen(screenEnvelope, screenFinal);
         startSlideshow();
+        startLoveTimer();
     });
 
-    // Automatic Slideshow Loop
     slideshowImg.addEventListener("error", () => {
         showNextImage();
     });
@@ -261,6 +243,58 @@ document.addEventListener("DOMContentLoaded", () => {
         slideshowInterval = setInterval(() => {
             showNextImage();
         }, 3500);
+    }
+
+    // ==========================================
+    // ⚙️ APNI DATE YAHA EDIT KAREIN:
+    // Format: "YYYY-MM-DDTHH:MM:SS" 
+    // Example: "2025-07-16T12:00:00" -> 16th July 2025
+    // ==========================================
+    const anniversaryStartDate = new Date("2025-07-16T12:00:00");
+
+    function startLoveTimer() {
+        function updateTimer() {
+            const now = new Date();
+            const difference = now - anniversaryStartDate;
+
+            if (difference < 0) {
+                document.getElementById("years").textContent = "00";
+                document.getElementById("days").textContent = "00";
+                document.getElementById("hours").textContent = "00";
+                document.getElementById("minutes").textContent = "00";
+                document.getElementById("seconds").textContent = "00";
+                return;
+            }
+
+            const msPerSecond = 1000;
+            const msPerMinute = msPerSecond * 60;
+            const msPerHour = msPerMinute * 60;
+            const msPerDay = msPerHour * 24;
+            const msPerYear = msPerDay * 365.25;
+
+            const years = Math.floor(difference / msPerYear);
+            let remainingMs = difference % msPerYear;
+
+            const days = Math.floor(remainingMs / msPerDay);
+            remainingMs = remainingMs % msPerDay;
+
+            const hours = Math.floor(remainingMs / msPerHour);
+            remainingMs = remainingMs % msPerHour;
+
+            const minutes = Math.floor(remainingMs / msPerMinute);
+            remainingMs = remainingMs % msPerMinute;
+
+            const seconds = Math.floor(remainingMs / msPerSecond);
+
+            document.getElementById("years").textContent = years < 10 ? "0" + years : years;
+            document.getElementById("days").textContent = days < 10 ? "0" + days : days;
+            document.getElementById("hours").textContent = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").textContent = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").textContent = seconds < 10 ? "0" + seconds : seconds;
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
     }
 
     function transitionScreen(fromScreen, toScreen) {
